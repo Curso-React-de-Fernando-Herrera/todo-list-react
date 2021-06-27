@@ -3,7 +3,10 @@ import { useState } from "react"
 export const useForm = ( stateToUse ) => {
   const [state, setState] = useState( stateToUse )
 
-  const handleChange = ({ target }, value = undefined) => {
+  const handleChange = (e, value = undefined) => {
+    const { target } = e
+
+    e.preventDefault()
 
     setState({
       ...state,
@@ -12,11 +15,14 @@ export const useForm = ( stateToUse ) => {
         : !value
       )
     })
-    
+  
   }
+
+  const reset = () => setState( stateToUse )
 
   return {
     state,
     handleChange,
+    reset
   }
 }

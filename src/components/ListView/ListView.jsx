@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useForm } from '../../hooks/useForm'
 
 const ListView = () => {
@@ -6,14 +7,19 @@ const ListView = () => {
     important: false
   }
 
-  const { state, handleChange } = useForm( initialState )
+  const { state, handleChange, reset } = useForm( initialState )
   const { task, important } = state
+
+  const [listTask, setListTask] = useState([])
 
   const handleSubmit = e => {
     e.preventDefault()
+    setListTask( list => list.concat(state))
+    reset()
   }
 
   return (
+    <>
       <form onSubmit={handleSubmit}>
 
         <input
@@ -33,6 +39,18 @@ const ListView = () => {
         <button>Guardar</button>
 
       </form>
+
+      <section>
+        {
+          listTask.map( ({ task, important }) => 
+            <article>
+              <p>{task}</p>
+              <button>{important ? '⭐' : '😔'}</button>
+            </article>
+          )
+        }
+      </section>
+    </>
   )
 }
 

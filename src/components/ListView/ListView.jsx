@@ -1,41 +1,12 @@
-import { useReducer } from 'react'
 import { useForm } from '../../hooks/useForm'
 import uniqid from 'uniqid'
+import { useReducerHook } from '../../hooks/useReducer'
 
 const ListView = () => {
-
   const { state, handleChange, reset } = useForm({ task: '', important: false })
   const { task, important } = state
 
-  const taskReducer = (state, action) => {
-    switch (action.type) {
-      case 'add':
-        return [
-          ...state,
-          action.payload
-        ]
-
-      case 'changeImportant':
-        return state.map( task => task.id === action.payload
-          ? { ...task, important: !task.important}
-          : task
-        )
-      
-      case 'delete':
-        return state.filter(task => task.id !== action.payload)
-
-      case 'complete':
-          return state.map( task => task.id === action.payload
-            ? { ...task, isCompleted: !task.isCompleted }  
-            : task
-          )
-    
-      default:
-        return state
-    }
-  } 
-
-  const [taskList, dispatch] = useReducer(taskReducer, [])
+  const { taskList, dispatch } = useReducerHook()
 
   const handleAdd = (e) => {
     e.preventDefault()

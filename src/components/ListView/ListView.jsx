@@ -27,7 +27,7 @@ const ListView = () => {
       case 'complete':
           return state.map( task => task.id === action.payload
             ? { ...task, isCompleted: !task.isCompleted }  
-            : state
+            : task
           )
     
       default:
@@ -51,7 +51,7 @@ const ListView = () => {
 
   return (
     <>
-      <form>
+      <form onSubmit={handleAdd}>
 
         <input
           type="text"
@@ -67,7 +67,7 @@ const ListView = () => {
           onClick={ (e) => handleChange(e, important) }
         >⭐</button>
         
-        <button onClick={handleAdd}>Guardar</button>
+        <button>Guardar</button>
 
       </form>
 

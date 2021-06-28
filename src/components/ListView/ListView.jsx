@@ -1,18 +1,16 @@
-import { useForm } from '../../hooks/useForm'
 import uniqid from 'uniqid'
-import { useReducerHook } from '../../hooks/useReducer'
+import { useReducerHook } from 'hooks/useReducer'
+import AddTask from 'components/AddTask'
+import ListTask from 'components/ListTask'
 
 const ListView = () => {
-  const { state, handleChange, reset } = useForm({ task: '', important: false })
-  const { task, important } = state
-
   const { taskList, dispatch } = useReducerHook()
 
-  const handleAdd = (e) => {
-    e.preventDefault()
-    dispatch({ type: 'add', payload: { ...state, id: uniqid(), isCompleted: false }})
-    reset()
-  }
+  const handleAddTask = (state) => dispatch({ type: 'add', payload: {
+    ...state,
+    id: uniqid(),
+    isCompleted: false,
+  }})
 
   const handleImportant = (id) => dispatch({ type: 'changeImportant', payload: id })
 
@@ -22,38 +20,14 @@ const ListView = () => {
 
   return (
     <>
-      <form onSubmit={handleAdd}>
+      <AddTask handleAddTask={handleAddTask} />
 
-        <input
-          type="text"
-          placeholder='New note...'
-          name='task'
-          value={task}
-          onChange={(e) => handleChange(e)}
-        />
-
-        <button
-          name='important'
-          value={important}
-          onClick={ (e) => handleChange(e, important) }
-        >⭐</button>
-        
-        <button>Guardar</button>
-
-      </form>
-
-      <section>
-        {
-          taskList.map(({ task, important, id, isCompleted }) => 
-            <article key={id}>
-              <p style={isCompleted ? {textDecoration: 'line-through'} : null}>{task}</p>
-              <button onClick={() => handleImportant(id)}>{important ? 'imp' : 'not imp'}</button>
-              <button onClick={() => handleComplete(id)}>Hecho</button>
-              <button onClick={() => handleDelete(id)}>Borrar</button>
-            </article>
-          )
-        }
-      </section>
+      <ListTask
+        taskList={taskList}
+        handleImportant={handleImportant}
+        handleComplete={handleComplete}
+        handleDelete={handleDelete}
+      />
     </>
   )
 }

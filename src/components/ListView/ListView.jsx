@@ -1,10 +1,19 @@
 import uniqid from 'uniqid'
-import { useReducerHook } from 'hooks/useReducer'
 import AddTask from 'components/AddTask'
 import ListTask from 'components/ListTask'
+import { useEffect, useReducer } from 'react'
+import taskReducer from './taskReducer'
+
+const init = () => {
+  return JSON.parse(window.localStorage.getItem('tasks')) || []
+}
 
 const ListView = () => {
-  const { taskList, dispatch } = useReducerHook()
+  const [taskList, dispatch] = useReducer(taskReducer, [], init)
+
+  useEffect(() => {
+    window.localStorage.setItem( 'tasks', JSON.stringify( taskList ) )
+  }, [taskList])
 
   const handleAddTask = (state) => dispatch({ type: 'add', payload: {
     ...state,

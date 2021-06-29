@@ -1,23 +1,20 @@
 import React from 'react'
 import PropTypes from 'prop-types'
+import ListTaskItem from 'components/ListTaskItem'
 
 const ListTask = ({ taskList, handleImportant, handleComplete, handleDelete }) => {
   return (
     <section>
     {
 
-      taskList.map(({ task, important, id, isCompleted }) => 
-
-        <article key={id}>
-
-          <p style={isCompleted ? {textDecoration: 'line-through'} : null}>{task}</p>
-
-          <button onClick={() => handleImportant(id)}>{important ? 'imp' : 'not imp'}</button>
-          <button onClick={() => handleComplete(id)}>Hecho</button>
-          <button onClick={() => handleDelete(id)}>Borrar</button>
-          
-        </article>
-
+      taskList.map((taskprops) => 
+        <ListTaskItem
+          handleImportant={handleImportant}
+          handleComplete={handleComplete}
+          handleDelete={handleDelete}
+          taskprops={taskprops}
+          key={taskprops.id}
+        />
       )
 
     }
@@ -28,8 +25,8 @@ const ListTask = ({ taskList, handleImportant, handleComplete, handleDelete }) =
 ListTask.propTypes = {
   taskList: PropTypes.array.isRequired,
   handleImportant: PropTypes.func.isRequired,
-  handleComplete: PropTypes.isRequired,
-  handleDelete: PropTypes.isRequired
+  handleComplete: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired
 }
 
 export default ListTask
